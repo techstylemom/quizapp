@@ -16,6 +16,7 @@
 		523F5AA62599BB7400347DB8 /* QuizAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523F5AA52599BB7400347DB8 /* QuizAppTests.swift */; };
 		523F5AB12599BB9800347DB8 /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523F5AB02599BB9800347DB8 /* Question.swift */; };
 		523F5AB52599BC3B00347DB8 /* QuizModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523F5AB42599BC3B00347DB8 /* QuizModel.swift */; };
+		523F5AB72599C2FD00347DB8 /* questionData.json in Resources */ = {isa = PBXBuildFile; fileRef = 523F5AB62599C2FD00347DB8 /* questionData.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +43,7 @@
 		523F5AA72599BB7400347DB8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		523F5AB02599BB9800347DB8 /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
 		523F5AB42599BC3B00347DB8 /* QuizModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizModel.swift; sourceTree = "<group>"; };
+		523F5AB62599C2FD00347DB8 /* questionData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = questionData.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 		523F5A8D2599BB6E00347DB8 /* QuizApp */ = {
 			isa = PBXGroup;
 			children = (
+				523F5AB62599C2FD00347DB8 /* questionData.json */,
 				523F5A8E2599BB6E00347DB8 /* AppDelegate.swift */,
 				523F5A902599BB6E00347DB8 /* SceneDelegate.swift */,
 				523F5A922599BB6E00347DB8 /* ViewController.swift */,
@@ -189,6 +192,7 @@
 				523F5A9B2599BB7400347DB8 /* LaunchScreen.storyboard in Resources */,
 				523F5A982599BB7400347DB8 /* Assets.xcassets in Resources */,
 				523F5A962599BB6E00347DB8 /* Main.storyboard in Resources */,
+				523F5AB72599C2FD00347DB8 /* questionData.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
