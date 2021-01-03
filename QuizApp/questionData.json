@@ -1,6 +1,6 @@
 [
 	{
-		"question": "What's the key word for declaring a new variable",
+		"question": "What's the key word for declaring a new variable?",
 		"answers": ["var", "v", "variable"],
 		"correctAnswerIndex": 0,
 		"feedback": "var is the keyword use to declare a new variable."
