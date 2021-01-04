@@ -19,7 +19,7 @@ class QuizModel {
     func getQuestions() {
         
         // Fetch the Questions
-        getLocalJsonFile()
+        getRemoteJsonFile()
         
     }
     
@@ -46,15 +46,59 @@ class QuizModel {
             let array = try decoder.decode([Question].self, from: data)
             
             // Notify the delegate of the parsed objects
-             delegate?.questionsRetrieved(array)
+            DispatchQueue.main.async {
+                self.delegate?.questionsRetrieved(array)
+            }
+            
             
         } catch {
             // Error: Couldn't download the data at that URL
         }
-     
+        
     }
     
     func getRemoteJsonFile() {
         
+        // Get a URL object
+        let urlString = "https://codewithchris.com/code/QuestionData.json"
+        
+        let url = URL(string: urlString)
+        
+        guard url != nil else {
+            print("Can't create a URL object")
+            return
+        }
+        
+        // Get a URLSession Object
+        let session = URLSession.shared
+        
+        // Get a data task object
+        let dataTask = session.dataTask(with: url!) { (data, response, error) in
+            
+            // Check that there wasn't an error
+            if error == nil && data != nil {
+                
+                do {
+                    
+                    // Create a JSON decoder object
+                    let decoder = JSONDecoder()
+                    
+                    // Parse the JSON
+                    let array = try decoder.decode([Question].self, from: data!)
+                    
+                    // Notify the delegate
+                    DispatchQueue.main.async {
+                        self.delegate?.questionsRetrieved(array)
+                    }
+                } catch {
+                    print("Couldn't download the data")
+                }
+   
+            }
+            
+        }
+        
+        // Call resume on data task
+        dataTask.resume()
     }
 }

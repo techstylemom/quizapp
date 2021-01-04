@@ -22,11 +22,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Initialize the result dialog
-        resultDialog = storyboard?.instantiateViewController(identifier: "ResultVC") as? ResultViewController
-        resultDialog?.modalPresentationStyle = .overCurrentContext
-        resultDialog?.delegate = self
+     
         
         // Set self as the delegate and datasource for the tableview
         tableView.delegate = self
@@ -39,6 +35,13 @@ class ViewController: UIViewController {
         // Setup the model
         model.delegate = self
         model.getQuestions()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        resultDialog = storyboard?.instantiateViewController(identifier: "ResultVC") as? ResultViewController
+        resultDialog?.modalPresentationStyle = .overCurrentContext
+        resultDialog?.delegate = self
     }
     
     func displayQuestion() {
@@ -105,23 +108,31 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             
             titleText = "Correct"
             numCorrect += 1
+           
             
         } else {
             // User got it wrong
             print("User got it wrong")
             
             titleText = "Wrong"
+        
         }
         
         // Show the popup
+        
         if resultDialog != nil {
             
             // Customize the dialog text
             resultDialog!.titleText = titleText
             resultDialog!.feedbackText = question.feedback!
             resultDialog!.buttonText = "Next"
-            present(resultDialog!, animated: true, completion: nil)
+            DispatchQueue.main.async {
+                self.present(self.resultDialog!, animated: true, completion: nil)
+            }
+            
         }
+        
+        
         
     }
     
@@ -135,10 +146,25 @@ extension ViewController: QuizProtocol {
         // Get a reference to the questions
         self.questions = questions
         
+        // Check if we should restore the state, before showing question #1
+        let savedIndex = StateManager.retrieveValue(key: StateManager.questionIndexKey) as? Int
+        
+        if savedIndex != nil && savedIndex! < self.questions.count {
+            
+            // Set the current question to the saved index
+            currentQuestionIndex = savedIndex!
+            
+            // Retrieve the number correct from storage
+            let savedNumCorrect = StateManager.retrieveValue(key: StateManager.numCorrectKey) as? Int
+            
+            if savedNumCorrect != nil {
+                numCorrect = savedNumCorrect!
+            }
+        }
+        
         // Display the first question
         displayQuestion()
-        // Reload the tableView
-        tableView.reloadData()
+        
     }
     
 }
@@ -154,13 +180,19 @@ extension ViewController: ResultViewControllerProtocol {
         if currentQuestionIndex == questions.count {
             // The use has just answered the last question
             // Show the summary dialog
+            
             if resultDialog != nil {
                 // Customize the dialog text
                 resultDialog!.titleText = "Summary"
                 resultDialog!.feedbackText = "You got \(numCorrect) out of \(questions.count) questions."
                 resultDialog!.buttonText = "Restart"
                 present(resultDialog!, animated: true, completion: nil)
+                
+                // Clear the state
+                StateManager.clearState()
             }
+            
+            
         } else if  currentQuestionIndex > questions.count {
             // Restart
             numCorrect = 0
@@ -170,6 +202,9 @@ extension ViewController: ResultViewControllerProtocol {
             // There are still more questions to show
             // Display the next question
             displayQuestion()
+            
+            // Save the state
+            StateManager.saveState(numCorrect: numCorrect, questionIndex: currentQuestionIndex)
         }
         
     }

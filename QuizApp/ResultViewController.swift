@@ -31,15 +31,29 @@ class ResultViewController: UIViewController {
         
         dialogView.layer.cornerRadius = 10
     }
-    
+ 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Now that the elements have loaded, set the the text
-        titleLabel.text = titleText
-        feedbackLabel.text = feedbackText
-        dismissButton.setTitle(buttonText, for: .normal)
+       // Now that the elements have loaded, set the the text
+      titleLabel.text = titleText
+      feedbackLabel.text = feedbackText
+      dismissButton.setTitle(buttonText, for: .normal)
         
+        //Hide the UI Elements
+        dimView.alpha = 0
+        titleLabel.alpha = 0
+        feedbackLabel.alpha = 0
+    
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        // Fade in the dimview
+        UIView.animate(withDuration: 0.6, delay: 0, options: .curveEaseOut, animations: {
+            self.dimView.alpha = 1
+            self.titleLabel.alpha = 1
+            self.feedbackLabel.alpha = 1
+        }, completion: nil)
     }
 
     @IBAction func dismissTapped(_ sender: UIButton) {
