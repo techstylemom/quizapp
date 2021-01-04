@@ -48,19 +48,29 @@ class ResultViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        // Fade in the dimview
+        
+        // Fade in the elements
         UIView.animate(withDuration: 0.6, delay: 0, options: .curveEaseOut, animations: {
             self.dimView.alpha = 1
             self.titleLabel.alpha = 1
             self.feedbackLabel.alpha = 1
+            
         }, completion: nil)
     }
 
     @IBAction func dismissTapped(_ sender: UIButton) {
-        // Dismiss the popup
-        dismiss(animated: true, completion: nil)
         
-        // Notify delegate that popup was dismissed
-        delegate?.dialogDismissed()
+        // Fade out the dimview and then dismiss the popup
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
+            self.dimView.alpha = 0
+        }) { (completed) in
+            // Dismiss the popup
+            self.dismiss(animated: true, completion: nil)
+            
+            // Notify delegate that popup was dismissed
+            self.delegate?.dialogDismissed()
+        }
+        
+        
     }
 }

@@ -12,6 +12,9 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var stackViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var stackViewTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var rootStackView: UIStackView!
     
     var model = QuizModel()
     var questions = [Question]()
@@ -56,6 +59,46 @@ class ViewController: UIViewController {
         
         // Reload the tableview
         tableView.reloadData()
+        
+        // Animate the question in
+        slideInQuestion()
+    }
+    
+    func slideInQuestion() {
+        
+        // Set initial state
+        stackViewTrailingConstraint.constant = -1000
+        stackViewLeadingConstraint.constant = 1000
+        rootStackView.alpha = 0
+        view.layoutIfNeeded()
+        
+        // Animate it to the end state
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
+            self.stackViewLeadingConstraint.constant = 0
+            self.stackViewTrailingConstraint.constant = 0
+            self.rootStackView.alpha = 1
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+        
+    }
+    
+    // Slide question to the left
+    func slideOutQuestion() {
+    
+        // Set the initial state
+        stackViewTrailingConstraint.constant = 0
+        stackViewLeadingConstraint.constant = 0
+        rootStackView.alpha = 1
+        view.layoutIfNeeded()
+        
+        // Animate it to the end state
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
+            self.stackViewLeadingConstraint.constant = -1000
+            self.stackViewTrailingConstraint.constant = 1000
+            self.rootStackView.alpha = 0
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+        
     }
 }
 
@@ -118,8 +161,12 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         
         }
         
-        // Show the popup
+        // Slide out question to the left
+        DispatchQueue.main.async {
+            self.slideOutQuestion()
+        }
         
+        // Show the popup
         if resultDialog != nil {
             
             // Customize the dialog text
@@ -131,9 +178,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             }
             
         }
-        
-        
-        
+
     }
     
 }
@@ -197,12 +242,15 @@ extension ViewController: ResultViewControllerProtocol {
             // Restart
             numCorrect = 0
             currentQuestionIndex = 0
+            
+            // Display question
             displayQuestion()
+               
         } else if currentQuestionIndex < questions.count {
             // There are still more questions to show
             // Display the next question
             displayQuestion()
-            
+           
             // Save the state
             StateManager.saveState(numCorrect: numCorrect, questionIndex: currentQuestionIndex)
         }

@@ -15,7 +15,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BackgroundImage" translatesAutoresizingMaskIntoConstraints="NO" id="TBV-Cm-99L">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BackgroundImage" translatesAutoresizingMaskIntoConstraints="NO" id="TBV-Cm-99L">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Cap-zg-GeQ">
@@ -90,6 +90,9 @@
                     </view>
                     <connections>
                         <outlet property="questionLabel" destination="YTg-AY-yg4" id="A4p-uT-IpH"/>
+                        <outlet property="rootStackView" destination="Cap-zg-GeQ" id="iTa-V5-cfS"/>
+                        <outlet property="stackViewLeadingConstraint" destination="j2F-EE-QM5" id="ezn-HD-gaX"/>
+                        <outlet property="stackViewTrailingConstraint" destination="sjj-rK-E8X" id="q9Q-q7-gSo"/>
                         <outlet property="tableView" destination="A8E-Tl-8yV" id="k5B-VW-czT"/>
                     </connections>
                 </viewController>
